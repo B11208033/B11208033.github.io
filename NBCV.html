@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大學生資源導航站 | Campus Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 自定義隱藏捲軸但保持可滾動 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- 導覽列 -->
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center flex-shrink-0 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <i class="fa-solid fa-graduation-cap text-brand-600 text-3xl mr-3"></i>
+                    <span class="font-bold text-xl tracking-tight text-gray-900">Campus<span class="text-brand-600">Hub</span></span>
+                </div>
+                
+                <!-- 桌面版選單 -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#hero" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">首頁</a>
+                    <a href="#resources" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">資源庫</a>
+                    <a href="#faq" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">常見問題</a>
+                    <a href="#" class="bg-brand-600 text-white px-5 py-2 rounded-full font-medium hover:bg-brand-700 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+                        學生登入
+                    </a>
+                </div>
+
+                <!-- 手機版選單按鈕 -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-600 hover:text-gray-900 focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 手機版下拉選單 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 shadow-lg absolute w-full">
+            <div class="px-2 pt-2 pb-4 space-y-1">
+                <a href="#hero" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50">首頁</a>
+                <a href="#resources" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50">資源庫</a>
+                <a href="#faq" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50">常見問題</a>
+                <div class="pt-4 pb-2 border-t border-gray-200">
+                    <a href="#" class="block w-full text-center bg-brand-600 text-white px-5 py-3 rounded-xl font-medium hover:bg-brand-700 transition-colors">學生登入</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主視覺 & 搜尋區 (Hero Section) -->
+    <header id="hero" class="relative pt-20 pb-24 lg:pt-32 lg:pb-40 overflow-hidden bg-white">
+        <!-- 裝飾性背景圖形 -->
+        <div class="absolute inset-y-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-brand-50 opacity-70 blur-3xl"></div>
+            <div class="absolute top-1/2 -left-24 w-72 h-72 rounded-full bg-purple-50 opacity-70 blur-3xl"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight mb-6">
+                你的大學生活 <span class="gradient-text inline-block">全能導航站</span>
+            </h1>
+            <p class="mt-4 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-10">
+                整合選課指南、校園資源、社團資訊與獎學金快訊。讓你少走彎路，專注於充實的大學生活。
+            </p>
+            
+            <!-- 搜尋框 -->
+            <div class="max-w-3xl mx-auto relative group">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-search text-gray-400 group-focus-within:text-brand-500 transition-colors"></i>
+                </div>
+                <input type="text" id="searchInput" class="block w-full pl-12 pr-4 py-4 sm:py-5 border-2 border-transparent bg-white shadow-xl rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all text-lg" placeholder="搜尋：選課教學、圖書館資源、校園地圖...">
+                <div class="absolute inset-y-0 right-2 flex items-center">
+                    <button class="bg-brand-600 hover:bg-brand-700 text-white p-2 sm:px-6 sm:py-3 rounded-xl font-medium transition-colors shadow-md">
+                        <span class="hidden sm:inline">搜尋資源</span>
+                        <i class="fa-solid fa-arrow-right sm:hidden"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 熱門標籤 -->
+            <div class="mt-8 flex flex-wrap justify-center gap-2 text-sm text-gray-500">
+                <span class="py-1">熱門搜尋：</span>
+                <button class="tag-btn hover:text-brand-600 hover:bg-brand-50 px-3 py-1 rounded-full border border-gray-200 transition-colors bg-white">選課懶人包</button>
+                <button class="tag-btn hover:text-brand-600 hover:bg-brand-50 px-3 py-1 rounded-full border border-gray-200 transition-colors bg-white">獎學金</button>
+                <button class="tag-btn hover:text-brand-600 hover:bg-brand-50 px-3 py-1 rounded-full border border-gray-200 transition-colors bg-white">校園地圖</button>
+                <button class="tag-btn hover:text-brand-600 hover:bg-brand-50 px-3 py-1 rounded-full border border-gray-200 transition-colors bg-white">宿舍規章</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 資源庫 (Resources Section) -->
+    <main id="resources" class="flex-grow py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">校園資源庫</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">快速存取學習與生活必備工具，所有的文件、連結都在這裡整理好了。</p>
+            </div>
+
+            <!-- 篩選按鈕 (分類) -->
+            <div class="flex overflow-x-auto no-scrollbar justify-start md:justify-center space-x-2 mb-10 pb-2">
+                <button class="filter-btn active px-5 py-2 rounded-full whitespace-nowrap font-medium text-sm transition-colors bg-brand-600 text-white shadow-md" data-filter="all">全部資源</button>
+                <button class="filter-btn px-5 py-2 rounded-full whitespace-nowrap font-medium text-sm transition-colors bg-white text-gray-600 border border-gray-200 hover:bg-gray-100" data-filter="academic">學業與選課</button>
+                <button class="filter-btn px-5 py-2 rounded-full whitespace-nowrap font-medium text-sm transition-colors bg-white text-gray-600 border border-gray-200 hover:bg-gray-100" data-filter="life">校園生活</button>
+                <button class="filter-btn px-5 py-2 rounded-full whitespace-nowrap font-medium text-sm transition-colors bg-white text-gray-600 border border-gray-200 hover:bg-gray-100" data-filter="career">職涯與實習</button>
+                <button class="filter-btn px-5 py-2 rounded-full whitespace-nowrap font-medium text-sm transition-colors bg-white text-gray-600 border border-gray-200 hover:bg-gray-100" data-filter="admin">行政表單</button>
+            </div>
+
+            <!-- 無搜尋結果提示 -->
+            <div id="noResults" class="hidden text-center py-12">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                    <i class="fa-solid fa-search-minus text-2xl text-gray-400"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-1">找不到相關資源</h3>
+                <p class="text-gray-500">試著使用其他關鍵字，或是瀏覽不同分類。</p>
+            </div>
+
+            <!-- 資源網格 -->
+            <div id="resourceGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 資源卡片將由 JS 動態生成 -->
+            </div>
+        </div>
+    </main>
+
+    <!-- 常見問題 (FAQ Section) -->
+    <section id="faq" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">新生必看 FAQ</h2>
+                <p class="text-gray-600">整理了歷屆學長姐最常被問到的問題，幫你快速解惑。</p>
+            </div>
+
+            <div class="space-y-4" id="faqContainer">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button class="faq-button w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-semibold text-gray-900 text-lg pr-4">選課系統什麼時候開放？忘記選怎麼辦？</span>
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center transition-transform duration-300 icon-wrapper">
+                            <i class="fa-solid fa-chevron-down text-brand-600"></i>
+                        </div>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6 pt-0 text-gray-600 leading-relaxed">
+                        選課系統通常在每學期開學前三週開放「初選」，開學第一週為「加退選」階段。具體時程請務必留意學校教務處公告。如果錯過加退選，需在開學第二週內尋求授課教師簽署「人工加簽單」交至系辦。
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button class="faq-button w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-semibold text-gray-900 text-lg pr-4">校園 Wi-Fi (eduroam) 該如何連線？</span>
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center transition-transform duration-300 icon-wrapper">
+                            <i class="fa-solid fa-chevron-down text-brand-600"></i>
+                        </div>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6 pt-0 text-gray-600 leading-relaxed">
+                        請選擇無線網路「eduroam」。<br>
+                        1. 帳號輸入：學號@你的學校網域 (例如: b11000000@edu.tw)<br>
+                        2. 密碼輸入：你的校務系統密碼 (或是資訊處另外核發的預設密碼)<br>
+                        3. 若無法連線，請忘記網路設定後重新嘗試，或洽詢圖書館 1F 資訊服務櫃台。
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button class="faq-button w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-semibold text-gray-900 text-lg pr-4">圖書館的討論室要怎麼借用？</span>
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center transition-transform duration-300 icon-wrapper">
+                            <i class="fa-solid fa-chevron-down text-brand-600"></i>
+                        </div>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6 pt-0 text-gray-600 leading-relaxed">
+                        圖書館討論室需透過「圖書館空間預約系統」進行線上預約。預約需至少 3 人以上，單次最多借用 4 小時。預約成功後，請於使用時間前 15 分鐘至櫃檯持學生證刷卡報到，逾時將釋出給現場候補同學。
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-item bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden transition-all duration-300">
+                    <button class="faq-button w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-semibold text-gray-900 text-lg pr-4">如果遇到身心壓力大，學校有諮商資源嗎？</span>
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center transition-transform duration-300 icon-wrapper">
+                            <i class="fa-solid fa-chevron-down text-brand-600"></i>
+                        </div>
+                    </button>
+                    <div class="faq-answer hidden px-6 pb-6 pt-0 text-gray-600 leading-relaxed">
+                        有的！學校設有「學生心理諮商中心」，提供免費且保密的心理諮商服務。你可以直接前往學務處大樓 3 樓進行初次預約，或是透過校園入口網線上填寫預約單。中心也提供職涯探索測驗與人際關係工作坊。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 (Footer) -->
+    <footer class="bg-gray-900 text-white pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center flex-shrink-0 mb-4">
+                        <i class="fa-solid fa-graduation-cap text-brand-400 text-2xl mr-2"></i>
+                        <span class="font-bold text-xl tracking-tight text-white">Campus<span class="text-brand-400">Hub</span></span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        專為大學生設計的資源整合平台。致力於打造最順暢、最豐富的大學生活體驗。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa-brands fa-discord text-xl"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 inline-block">快速連結</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#hero" class="text-gray-400 hover:text-brand-400 transition-colors">首頁</a></li>
+                        <li><a href="#resources" class="text-gray-400 hover:text-brand-400 transition-colors">資源庫</a></li>
+                        <li><a href="#faq" class="text-gray-400 hover:text-brand-400 transition-colors">常見問題</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-brand-400 transition-colors">校園入口網</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 inline-block">聯絡支援</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-location-dot mt-1 mr-3 text-brand-400"></i>
+                            <span>台北市大安區羅斯福路四段1號<br>學生活動中心 2F 學生會</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa-solid fa-envelope mr-3 text-brand-400"></i>
+                            <span>support@campushub.edu.tw</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa-solid fa-phone mr-3 text-brand-400"></i>
+                            <span>(02) 2345-6789 分機 1234</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>&copy; 2026 CampusHub. 版權所有。</p>
+                <div class="space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">隱私權政策</a>
+                    <a href="#" class="hover:text-white transition-colors">服務條款</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回頂部按鈕 -->
+    <button id="backToTop" class="fixed bottom-6 right-6 bg-brand-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:bg-brand-700 hover:shadow-xl hover:-translate-y-1 z-40 focus:outline-none">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript 互動邏輯 -->
+    <script>
+        // 資源數據庫
+        const resourcesData = [
+            { id: 1, title: "115學年度 選課懶人包與時程表", desc: "完整圖文教學，教你如何搶課、避開雷課，附帶通識課程推薦清單。", category: "academic", icon: "fa-calendar-check", color: "text-blue-500", bg: "bg-blue-50" },
+            { id: 2, title: "圖書館電子資源遠端存取", desc: "校外如何連線 VPN 使用學術資料庫、下載論文與電子書的詳細步驟。", category: "academic", icon: "fa-book-open", color: "text-indigo-500", bg: "bg-indigo-50" },
+            { id: 3, title: "校園實境地圖與空教室查詢", desc: "尋找最近的影印店、飲水機，或是即時查詢哪裡有空教室可以自習。", category: "life", icon: "fa-map-location-dot", color: "text-emerald-500", bg: "bg-emerald-50" },
+            { id: 4, title: "校內外獎學金申請總整理", desc: "整理超過 50 種校內外獎學金資訊、申請資格、期限與準備文件模板。", category: "admin", icon: "fa-hand-holding-dollar", color: "text-amber-500", bg: "bg-amber-50" },
+            { id: 5, title: "履歷撰寫與面試技巧指南", desc: "職涯發展中心提供的公版履歷模板 (Word/Canva) 與常見面試題庫。", category: "career", icon: "fa-user-tie", color: "text-violet-500", bg: "bg-violet-50" },
+            { id: 6, title: "宿舍生活公約與報修系統", desc: "包含門禁時間、垃圾處理規範，以及冷氣、網路損壞時的報修流程。", category: "life", icon: "fa-building-user", color: "text-rose-500", bg: "bg-rose-50" },
+            { id: 7, title: "學生請假系統與證明文件", desc: "事假、病假、喪假線上申請入口，以及缺考證明的辦理方式。", category: "admin", icon: "fa-file-signature", color: "text-cyan-500", bg: "bg-cyan-50" },
+            { id: 8, title: "校園打工與實習機會看板", desc: "系辦工讀生、圖書館志工招募，以及各大企業的暑期/學期實習職缺。", category: "career", icon: "fa-briefcase", color: "text-teal-500", bg: "bg-teal-50" },
+            { id: 9, title: "歷年考古題與考古筆記雲端", desc: "由系學會與學生會共同維護的學術雲端硬碟，需使用學生信箱登入。", category: "academic", icon: "fa-cloud-arrow-down", color: "text-sky-500", bg: "bg-sky-50" }
+        ];
+
+        const gridContainer = document.getElementById('resourceGrid');
+        const noResults = document.getElementById('noResults');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        // 生成卡片 HTML
+        function generateCardHTML(resource) {
+            return `
+                <div class="resource-card bg-white rounded-2xl shadow-sm border border-gray-100 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-brand-200 group flex flex-col h-full" data-category="${resource.category}">
+                    <div class="flex items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl ${resource.bg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid ${resource.icon} ${resource.color} text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-bold text-gray-900 group-hover:text-brand-600 transition-colors line-clamp-2">${resource.title}</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">${resource.desc}</p>
+                    <div class="mt-auto pt-4 border-t border-gray-50">
+                        <a href="#" class="inline-flex items-center text-sm font-semibold text-brand-600 hover:text-brand-700">
+                            查看資源 <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 渲染資源卡片
+        function renderResources(data) {
+            if (data.length === 0) {
+                gridContainer.innerHTML = '';
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                gridContainer.innerHTML = data.map(generateCardHTML).join('');
+            }
+        }
+
+        // 初始化渲染
+        renderResources(resourcesData);
+
+        // 搜尋與篩選邏輯
+        let currentFilter = 'all';
+
+        function filterAndSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            const filteredData = resourcesData.filter(resource => {
+                const matchesSearch = resource.title.toLowerCase().includes(searchTerm) || resource.desc.toLowerCase().includes(searchTerm);
+                const matchesFilter = currentFilter === 'all' || resource.category === currentFilter;
+                return matchesSearch && matchesFilter;
+            });
+
+            renderResources(filteredData);
+        }
+
+        // 監聽搜尋輸入
+        searchInput.addEventListener('input', filterAndSearch);
+
+        // 熱門標籤點擊快速搜尋
+        document.querySelectorAll('.tag-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const text = e.target.innerText;
+                searchInput.value = text;
+                // 重置過濾器為全部
+                currentFilter = 'all';
+                updateFilterUI();
+                filterAndSearch();
+                // 滾動到資源區
+                document.getElementById('resources').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // 監聽分類篩選點擊
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                currentFilter = e.target.getAttribute('data-filter');
+                updateFilterUI();
+                filterAndSearch();
+            });
+        });
+
+        // 更新篩選按鈕的 UI 樣式
+        function updateFilterUI() {
+            filterBtns.forEach(btn => {
+                if (btn.getAttribute('data-filter') === currentFilter) {
+                    btn.classList.add('bg-brand-600', 'text-white', 'shadow-md');
+                    btn.classList.remove('bg-white', 'text-gray-600', 'hover:bg-gray-100');
+                } else {
+                    btn.classList.remove('bg-brand-600', 'text-white', 'shadow-md');
+                    btn.classList.add('bg-white', 'text-gray-600', 'hover:bg-gray-100');
+                }
+            });
+        }
+
+        // FAQ 手風琴互動
+        document.querySelectorAll('.faq-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const answer = button.nextElementSibling;
+                const iconWrapper = button.querySelector('.icon-wrapper');
+                const faqItem = button.parentElement;
+                
+                // 關閉其他開啟的 FAQ
+                document.querySelectorAll('.faq-answer').forEach(el => {
+                    if(el !== answer && !el.classList.contains('hidden')) {
+                        el.classList.add('hidden');
+                        el.parentElement.querySelector('.icon-wrapper').classList.remove('rotate-180', 'bg-brand-50');
+                        el.parentElement.classList.remove('border-brand-200', 'shadow-md');
+                    }
+                });
+
+                // 切換當前 FAQ 狀態
+                answer.classList.toggle('hidden');
+                iconWrapper.classList.toggle('rotate-180');
+                iconWrapper.classList.toggle('bg-brand-50');
+                faqItem.classList.toggle('border-brand-200');
+                faqItem.classList.toggle('shadow-md');
+            });
+        });
+
+        // 手機版選單開關
+        const mobileMenuBtn = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuBtn.querySelector('i');
+            if(mobileMenu.classList.contains('hidden')){
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            }
+        });
+
+        // 點擊手機選單連結後自動關閉選單
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.querySelector('i').classList.remove('fa-xmark');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            });
+        });
+
+        // 返回頂部按鈕邏輯
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
